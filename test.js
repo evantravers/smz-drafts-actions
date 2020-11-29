@@ -22,6 +22,7 @@ There should be no confusion.
 `;
 draft2.displayTitle = "This ought to be a title" // mock
 draft2.lines = draft2.content.split("\n")
+draft2.createdAt = 1606660908639
 
 var draft3 = {}
 draft3.content =
@@ -39,10 +40,22 @@ This should be content
 draft3.lines = draft3.content.split("\n")
 
 console.assert(
-  Zettel.get_meta(draft3).title == 'foobar: the bedoubling',
+  Zettel.parse(draft3).title == "foobar: the bedoubling",
   "Testing extra :"
 )
-console.assert(
-  Zettel.title(draft2) == "This ought to be a title",
-  "Testing fallback title"
-)
+
+// console.assert(
+//   Zettel.title(draft2) == "This ought to be a title",
+//   "Testing fallback title"
+// )
+
+// console.assert(
+//   Zettel.filename(draft3) == "2020112844939-foobar-the-bedoubling.md",
+//   "Testing filename with metadata"
+// )
+
+// console.assert(
+//   Zettel.filename(draft2) == "",
+//   "Testing filename without metadata",
+//   Zettel.filename(draft2)
+// )

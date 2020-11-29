@@ -1,0 +1,26 @@
+{
+  "name": "smz-drafts-actions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "api.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evantravers/smz-drafts-actions.git"
+  },
+  "keywords": [
+    "drafts"
+  ],
+  "author": "Evan Travers",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evantravers/smz-drafts-actions/issues"
+  },
+  "homepage": "https://github.com/evantravers/smz-drafts-actions#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "strftime": "^0.10.0"
+  }
+}
