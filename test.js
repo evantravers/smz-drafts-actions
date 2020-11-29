@@ -14,12 +14,13 @@ There should be no confusion.
 
 var draft2 = {};
 draft2.content =
-`#This ought to be a title
+`# This ought to be a title
 
 This ought to be content.
 
 There should be no confusion.
 `;
+draft2.displayTitle = "This ought to be a title" // mock
 draft2.lines = draft2.content.split("\n")
 
 var draft3 = {}
@@ -37,4 +38,11 @@ This should be content
 `
 draft3.lines = draft3.content.split("\n")
 
-console.log(Zettel.__split(draft3));
+console.assert(
+  Zettel.get_meta(draft3).title == 'foobar: the bedoubling',
+  "Testing extra :"
+)
+console.assert(
+  Zettel.title(draft2) == "This ought to be a title",
+  "Testing fallback title"
+)
