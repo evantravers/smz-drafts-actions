@@ -1,7 +1,7 @@
 var fs = require("fs")
 var vm = require('vm')
 
-vm.runInThisContext(fs.readFileSync('./zettel.js'))
+vm.runInThisContext(fs.readFileSync('./api.js'))
 
 var draft1 = {};
 draft1.content =
