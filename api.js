@@ -6,10 +6,16 @@ var Zettel = {};
 Zettel.render = function(obj) {
   let meta =
     Object.entries(obj.meta)
-      .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
+      .map(([k, v]) => `${k}: ${Zettel.__render_meta(v)}`)
       .join("\n");
 
   return `---\n${meta}\n---\n\n${obj.content}`;
+}
+
+// __render_meta(Any) :: String
+Zettel.__render_meta = function(val) {
+  val = JSON.stringify(val);
+  return val.slice(1, val.length-1); // remove ".*"
 }
 
 // update_meta(Draft, String, Any) :: Draft
