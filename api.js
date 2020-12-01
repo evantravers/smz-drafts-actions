@@ -26,10 +26,11 @@ Zettel.update_meta = function(d, key, value) {
   Zettel.render(z);
 }
 
-// __parse_meta(string) :: Object
-Zettel.__parse_meta = function(meta) {
-  if (meta) {
-    return meta
+// __parse_meta(String) :: Object
+Zettel.__parse_meta = function(meta_string) {
+  if (meta_string) {
+    meta = {}
+    meta_string
       .split("\n")
       .map(function(s) {
         let sp = s.search(/: /, 2);
@@ -38,6 +39,7 @@ Zettel.__parse_meta = function(meta) {
 
         if (key) { meta[key] = val; }
       });
+    return meta;
   }
   else {
     return null;
