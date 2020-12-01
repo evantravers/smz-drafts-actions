@@ -77,7 +77,7 @@ Zettel.parse = function(d) {
 Zettel.filename = function(d) {
   let z = Zettel.parse(d)
   let title =
-    z.title
+    z.meta.title
       .toLowerCase()
       .replace(/[^a-z0-9_\s]/g, '')
       .replace(/\s+/g, '-');
