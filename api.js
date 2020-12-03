@@ -6,14 +6,14 @@ var Zettel = {};
 Zettel.render = function(obj) {
   let meta =
     Object.entries(obj.meta)
-      .map(([k, v]) => `${k}: ${Zettel.__render_meta(v)}`)
+      .map(([k, v]) => `${k}: ${Zettel.__renderMeta(v)}`)
       .join("\n");
 
   return `---\n${meta}\n---\n\n${obj.content}`;
 }
 
-// __render_meta(Any) :: String
-Zettel.__render_meta = function(val) {
+// __renderMeta(Any) :: String
+Zettel.__renderMeta = function(val) {
   if (Array.isArray(val)) {
     val = JSON.stringify(val);
     return val.slice(1, val.length-1); // remove ".*"
@@ -23,16 +23,16 @@ Zettel.__render_meta = function(val) {
   }
 }
 
-// update_meta(Draft, String, Any) :: Draft
+// updateMeta(Draft, String, Any) :: Draft
 // This is to update a single key/value pair in a draft.
-Zettel.update_meta = function(d, key, value) {
+Zettel.updateMeta = function(d, key, value) {
   let z = Zettel.parse(d);
   z.meta[key] = value;
   Zettel.render(z);
 }
 
-// __parse_meta(String) :: Object
-Zettel.__parse_meta = function(meta_string) {
+// __parseMeta(String) :: Object
+Zettel.__parseMeta = function(meta_string) {
   if (meta_string) {
     meta = {}
     meta_string
@@ -63,7 +63,7 @@ Zettel.parse = function(d) {
       meta = d.lines.slice(start+1, end+1).join("\n").trim()
       content = d.lines.slice(end+2, d.lines.length).join("\n").trim()
 
-      meta = Zettel.__parse_meta(meta);
+      meta = Zettel.__parseMeta(meta);
     }
   }
 
