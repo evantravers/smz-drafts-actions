@@ -14,8 +14,13 @@ Zettel.render = function(obj) {
 
 // __render_meta(Any) :: String
 Zettel.__render_meta = function(val) {
-  val = JSON.stringify(val);
-  return val.slice(1, val.length-1); // remove ".*"
+  if (Array.isArray(val)) {
+    val = JSON.stringify(val);
+    return val.slice(1, val.length-1); // remove ".*"
+  }
+  else {
+    return val;
+  }
 }
 
 // update_meta(Draft, String, Any) :: Draft
