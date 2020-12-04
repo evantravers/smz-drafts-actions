@@ -20,12 +20,11 @@ Zettel.update = function(z) {
 // __renderMeta(Any) :: String
 Zettel.__renderMeta = function(val) {
   if (Array.isArray(val)) {
+    // remove duplicates
+    val = val.filter((v, i, a) => a.indexOf(v) === i);
     val = JSON.stringify(val);
-    return val.slice(1, val.length-1); // remove ".*"
   }
-  else {
-    return val;
-  }
+  return val;
 }
 
 // updateMeta(Draft, String, Any) :: Draft
@@ -46,6 +45,10 @@ Zettel.__parseMeta = function(meta_string) {
         let sp = s.search(/: /, 2);
         let key = s.slice(0, sp)
         let val = s.slice(sp+2, s.length);
+
+        if (val.match(/\[.*\]/)) {
+          val = JSON.parse(val);
+        }
 
         if (key) { meta[key] = val; }
       });
