@@ -80,7 +80,9 @@ Zettel.parse = function(d) {
   }
 
   if (!meta.title) {
-    meta.title = d.displayTitle;
+    if (d.displayTitle != d.content) {
+      meta.title = d.displayTitle;
+    }
   }
 
   return { meta: meta, content: content }
