@@ -3,13 +3,18 @@ var Zettel = {};
 // render(Object) :: nil
 // takes the object {meta: Object, content: String} and
 // "renders" the content.
-Zettel.render = function(obj) {
+Zettel.__render = function(obj) {
   let meta =
     Object.entries(obj.meta)
       .map(([k, v]) => `${k}: ${Zettel.__renderMeta(v)}`)
       .join("\n");
 
   return `---\n${meta}\n---\n\n${obj.content}`;
+}
+
+Zettel.update = function(z) {
+  draft.content = Zettel.__render(z);
+  draft.update();
 }
 
 // __renderMeta(Any) :: String
