@@ -86,14 +86,13 @@ Zettel.parse = function(d) {
   return { meta: meta, content: content }
 }
 
-// filename(Draft) :: String
-Zettel.filename = function(d) {
-  let z = Zettel.parse(d)
+// filename(obj) :: String
+Zettel.filename = function(z) {
   let title =
     z.meta.title
       .toLowerCase()
       .replace(/[^a-z0-9_\s]/g, '')
       .replace(/\s+/g, '-');
-  return `${z.id}-${title}.md`;
+  return `${z.meta.id}-${title}.md`;
 }
 
