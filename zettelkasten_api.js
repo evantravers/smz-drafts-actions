@@ -1,20 +1,32 @@
 var Zettel = {};
 
-// render(Object) :: nil
+// render(Object) :: String
 // takes the object {meta: Object, content: String} and
 // "renders" the content.
 Zettel.__render = function(obj) {
   let meta =
     Object.entries(obj.meta)
+      .filter(([k, v]) => v)
       .map(([k, v]) => `${k}: ${Zettel.__renderMeta(v)}`)
       .join("\n");
 
   return `---\n${meta}\n---\n\n${obj.content}`;
 }
 
-Zettel.update = function(z) {
-  draft.content = Zettel.__render(z);
-  draft.update();
+// update(zettel, draft) :: nil
+Zettel.update = function(z, d = draft) {
+  d.content = Zettel.__render(z);
+  d.update();
+}
+
+// pushTag(obj, string) :: nil
+Zettel.pushTag = function(z, tag) {
+  if (z.meta.tags) {
+    z.meta.tags.push(tag);
+  }
+  else {
+    z.meta.tags = [tag];
+  }
 }
 
 // __renderMeta(Any) :: String
@@ -45,7 +57,7 @@ Zettel.__parseMeta = function(meta_string) {
         let sp = s.search(/: /, 2);
         let key = s.slice(0, sp)
         let val = s.slice(sp+2, s.length);
-
+        
         if (val.match(/\[.*\]/)) {
           val = JSON.parse(val);
         }
@@ -97,4 +109,5 @@ Zettel.filename = function(z) {
       .replace(/\s+/g, '-');
   return `${z.meta.id}-${title}.md`;
 }
+
 
