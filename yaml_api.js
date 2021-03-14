@@ -4,12 +4,27 @@ const yaml = {
     let end = d.lines.indexOf("---", start)
     return d.lines.slice(start, end).join("\n")
   },
+
+  content: function(d = draft) {
+  return d.content.replace(`---\n${yaml.extract(d)}\n---\n\n`, "");
+  },
+  
   loadFrontmatter: function(d = Draft) {
     return yaml.load(yaml.extract(d))
   },
+  
+  dumpFrontmatter: function(meta) {
+    if (Object.keys(meta) === 0) {
+      return '';
+    } else {
+      return `---\n${yaml.dump(meta)}\n---\n\n`;
+    }
+  },
+  
   load: function(str) {
     return parser.parse(str)
   },
+  
   dump: function(obj) {
     // for key in obj
     let y = "";
@@ -17,7 +32,7 @@ const yaml = {
       y += `${key}: `
       if (Array.isArray(obj[key])) {
         y += `\n${obj[key].map(v => "- " + v).join("\n")}`
-      } else if (obj[key]. match(/[':#]/)) {
+      } else if (obj[key]. match(/'|:|#/)) {
         y += `"${obj[key]}"`
       } else if (obj[key]. match(/"/)) {
         y += `'${obj[key]}'`
@@ -36,7 +51,6 @@ const parser = {
     let json =
       str.split("\n").reduce(function(binding, line) {
         line = line.trimEnd();
-        console.log(line)
 
         // start of a list
         if (line.match(/^\w*:$/)) {
@@ -46,8 +60,6 @@ const parser = {
         }
         // start of a list item
         else if (line.match(/^- .*$/)) {
-          console.log(JSON.stringify(binding))
-          console.log(line)
           let val = line.match(/^- (.*)$/)[1];
           binding[binding.tmpVar].push(val)
         }
@@ -95,5 +107,4 @@ Testing a paragraph below`,
 draft.lines = draft.content.split("\n")
 
 testJson = yaml.loadFrontmatter(draft)
-console.log(JSON.stringify(testJson))
-console.log(yaml.dump(testJson))
+console.log(yaml.content(draft));
