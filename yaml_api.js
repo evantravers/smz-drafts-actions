@@ -8,11 +8,11 @@ const yaml = {
   content: function(d = draft) {
   return d.content.replace(`---\n${yaml.extract(d)}\n---\n\n`, "");
   },
-  
+
   loadFrontmatter: function(d = Draft) {
     return yaml.load(yaml.extract(d))
   },
-  
+
   dumpFrontmatter: function(meta) {
     if (Object.keys(meta) === 0) {
       return '';
@@ -20,11 +20,11 @@ const yaml = {
       return `---\n${yaml.dump(meta)}\n---\n\n`;
     }
   },
-  
+
   load: function(str) {
     return parser.parse(str)
   },
-  
+
   dump: function(obj) {
     // for key in obj
     let y = "";
@@ -89,7 +89,7 @@ draft = {
 id: 202101312155
 title: Leadership Strategy and Tactics
 started: January 31, 2021
-tags: 
+tags:
 - #booknote"
 - "#book"
 subtitle: Field Manual
