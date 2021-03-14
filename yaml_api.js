@@ -8,7 +8,7 @@ const yaml = {
     return yaml.load(yaml.extract(d))
   },
   load: function(str) {
-    return parser.obj(parser.tokenize(str)).binding;
+    return parser.parse(str)
   },
   dump: function(obj) {
     // for key in obj
@@ -32,52 +32,68 @@ const yaml = {
 
 // private ==========
 const parser = {
-  tokenize: function(str) {
-    console.log(str.split(/\s/));
-    return {
-      tokens: str.split(/\s/),
-      binding: {}
-    }
-  },
+  parse: function(str) {
+    let json =
+      str.split("\n").reduce(function(binding, line) {
+        line = line.trimEnd();
+        console.log(line)
 
-  next: function(b) {
-    return b.tokens.shift();
-  },
+        // start of a list
+        if (line.match(/^\w*:$/)) {
+          let token = line.match(/(\w.*):/)[1];
+          binding[token] = []
+          binding.tmpVar = token;
+        }
+        // start of a list item
+        else if (line.match(/^- .*$/)) {
+          console.log(JSON.stringify(binding))
+          console.log(line)
+          let val = line.match(/^- (.*)$/)[1];
+          binding[binding.tmpVar].push(val)
+        }
+        // start an assignment
+        else if (line.match(/^\w.+: ?.*$/)) {
+          let token = line.match(/^(\w.+): ?.*$/)[1]
+          let val   = line.match(/^\w.+: ?(.*)$/)[1]
 
-  // obj(binding)
-  obj: function(b) {
-    // should expect an key and a value, in this context is essentially assignment
-    // FIXME: replace is kluge
-    let token = parser.next(b).replace(":", "");
-    
-    b.binding[token] = parser.val(b);
-    return b;
-  },
+          binding[token] = val;
+        }
+        else {
+          console.error("Couln't match " + line);
+        }
 
-  val: function(b) {
-    console.log(JSON.stringify(b))
-    // need to account for:
-    // strings with or without quotes
-    // lists
-    let token = parser.next(b);
-    console.log(token);
-    return b;
+        return binding;
+      }, {});
+
+    // cleanup
+    delete json.tmpVar;
+
+    return json;
   }
 };
 
 draft = {
   content: `---
-title: This is a Test
-tags:
-- foo
-- "#bar"
-aliases:
+id: 202101312155
+title: Leadership Strategy and Tactics
+started: January 31, 2021
+tags: 
+- #booknote"
+- "#book"
+subtitle: Field Manual
+authors: Jocko Willink
+publisher: St. Martin's Press
+year: 2020
+identifier: 9781250226853
+completed: N/A
 ---
 
-# title
+# Leadership Strategy and Tactics by Jocko Willink
 
-Paragraph`,
+Testing a paragraph below`,
 }
 draft.lines = draft.content.split("\n")
 
-console.log(yaml.loadFrontmatter(draft))
+testJson = yaml.loadFrontmatter(draft)
+console.log(JSON.stringify(testJson))
+console.log(yaml.dump(testJson))
